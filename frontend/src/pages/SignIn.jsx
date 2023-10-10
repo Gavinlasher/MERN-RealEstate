@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { signInStart,signInFailure,signInSuccess } from "../redux/user/userSlice.js";
+import {
+  signInStart,
+  signInFailure,
+  signInSuccess,
+} from "../redux/user/userSlice.js";
+import OAuth from "../components/OAuth.jsx";
 
 function SignIn() {
   const [formData, setFormData] = useState({});
-const {loading,error} = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleChange = (e) => {
@@ -28,10 +33,10 @@ const {loading,error} = useSelector((state) => state.user);
     const data = await res.json();
     console.log(data);
     if (data.success === false) {
-     dispatch(signInFailure(data.message))
+      dispatch(signInFailure(data.message));
       return;
     }
-  dispatch(signInSuccess(data))
+    dispatch(signInSuccess(data));
     navigate("/");
   };
 
@@ -59,6 +64,7 @@ const {loading,error} = useSelector((state) => state.user);
         >
           {loading ? "Loading...." : "Sign In"}
         </button>
+        <OAuth />
       </form>
       <div className="flex gap-2 mt-5">
         <p>Dont have an account?</p>
