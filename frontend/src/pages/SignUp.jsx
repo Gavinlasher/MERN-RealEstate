@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -23,13 +24,15 @@ function SignUp() {
       body: JSON.stringify(formData),
     });
     const data = await res.json();
+    console.log(data);
     if (data.success === false) {
       setError(data.message);
       setLoading(false);
       return;
     }
+    setError(null);
     setLoading(false);
-    console.log(data);
+    navigate("/sign-in");
   };
 
   return (
@@ -70,8 +73,8 @@ function SignUp() {
           <span className="text-blue-700">Sign-in</span>
         </Link>
       </div>
+      {error && <p className="text-red-500 mt-5">{error}</p>}
     </div>
   );
 }
-
 export default SignUp;
